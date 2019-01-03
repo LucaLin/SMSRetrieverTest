@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
- * Created by R30-A on 2018/12/26.
+ * Created by luca refer to developers on 2018/12/26.
  */
 
 public class AppSignatureHelper extends ContextWrapper {

@@ -1,6 +1,6 @@
 package com.example.r30_a.otpretrievertest;
 
-import android.Manifest;
+
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -8,11 +8,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.IntentSender;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
@@ -27,15 +25,10 @@ import com.google.android.gms.auth.api.credentials.HintRequest;
 import com.google.android.gms.auth.api.phone.SmsRetriever;
 import com.google.android.gms.auth.api.phone.SmsRetrieverClient;
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.Status;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
@@ -44,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     GoogleApiClient googleApiClient;
     private static final int RESOLVE_HINT = 50005;
     TextView txvNumber;
-    Button btnOK,btnsend;
+    Button btnsend;
     ArrayList<String> appSignatures;
     MybroadcastReciever mybroadcastReciever;
     Task<Void> task;
@@ -76,19 +69,18 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                         //通知
                         NotificationManager manager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
                         NotificationCompat.Builder builder = new NotificationCompat.Builder(MainActivity.this,"1");
-
                         builder.setSmallIcon(R.drawable.icons8_sms_30)
                                 .setContentText(msg)
                                 .setContentTitle("假設這是簡訊");
                         Notification notification = builder.build();
                         manager.notify(1,notification);
 
-                        txvNumber.setText(msg);
+                        txvNumber.setText(msg);//實際上需將此msg送出至伺服器做驗證動作，在此先做範例顯示
                         LocalBroadcastManager.getInstance(MainActivity.this).unregisterReceiver(mybroadcastReciever);
                     }
                     @Override
                     public void onTimeOut() {
-
+                        txvNumber.setText("timeout!!");
                     }
                 });
             }
@@ -111,8 +103,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             @Override
             public void onClick(View view) {
                 //actually send phonenumber & appsignature to server
-                //在bundle接他做好的msg跟結果
 
+                //-----使用簡訊傳訊，測試簡訊內容格式
                 Intent intent_sms = new Intent(Intent.ACTION_VIEW);
                 intent_sms.setData( Uri.parse("smsto:"));
                 intent_sms.setType("vnd.android-dir/mms-sms");
@@ -156,7 +148,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     @Override
     public void onConnectionSuspended(int i) {}
-
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {}

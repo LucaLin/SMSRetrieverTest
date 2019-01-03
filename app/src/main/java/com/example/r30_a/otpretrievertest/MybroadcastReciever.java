@@ -1,20 +1,18 @@
 package com.example.r30_a.otpretrievertest;
 
-import android.app.PendingIntent;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.telephony.SmsManager;
-import android.widget.Toast;
+
 
 import com.google.android.gms.auth.api.phone.SmsRetriever;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.common.api.CommonStatusCodes;
 
 /**
- * Created by R30-A on 2018/12/26.
+ * Created by luca refer to developers on 2018/12/26.
  */
 
 public class MybroadcastReciever extends BroadcastReceiver{
@@ -41,8 +39,8 @@ public class MybroadcastReciever extends BroadcastReceiver{
     public static MyBroadcastRecieverListener myBroadcastRecieverListener;
 
     public interface MyBroadcastRecieverListener{
-        public void onRecieved(String msg);
-        public void onTimeOut();
+        void onRecieved(String msg);
+        void onTimeOut();
     }
     public static void setOnMyBroadcaseRecieverListener(MyBroadcastRecieverListener listener){
         myBroadcastRecieverListener = listener;
