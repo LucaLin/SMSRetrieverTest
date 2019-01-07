@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     GoogleApiClient googleApiClient;
     private static final int RESOLVE_HINT = 50005;
-    TextView txvNumber;
+    TextView txvNumber,txvResult;
     Button btnsend;
     ArrayList<String> appSignatures;
     MybroadcastReciever mybroadcastReciever;
@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                         Notification notification = builder.build();
                         manager.notify(1,notification);
 
-                        txvNumber.setText(msg);//實際上需將此msg送出至伺服器做驗證動作，在此先做範例顯示
+                        txvResult.setText(msg);//實際上需將此msg送出至伺服器做驗證動作，在此先做範例顯示
                         LocalBroadcastManager.getInstance(MainActivity.this).unregisterReceiver(mybroadcastReciever);
                     }
                     @Override
@@ -96,6 +96,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     private void initView() {
 
         txvNumber = (TextView)findViewById(R.id.txvNumber);
+        txvResult = (TextView)findViewById(R.id.txvResult);
         mybroadcastReciever = new MybroadcastReciever();
         btnsend = (Button)findViewById(R.id.btnsend);
         //假裝開始驗證的button
