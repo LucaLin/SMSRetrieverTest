@@ -4,6 +4,7 @@ package com.example.r30_a.otpretrievertest;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -104,15 +105,20 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             @Override
             public void onClick(View view) {
                 //actually send phonenumber & appsignature to server
+                try {
+                    Intent intent_sms = new Intent();
+                    intent_sms.setAction(Intent.ACTION_SENDTO);
+                    intent_sms.setData( Uri.parse("smsto:"+phoneNumber));
+                    intent_sms.putExtra("sms_body","<#> your otp is 123456\n"+appSignatures.get(0));
 
+                    MainActivity.this.startActivity(intent_sms);
+                }catch (ActivityNotFoundException e){
+                    e.getMessage();
+                }catch (Exception e){
+                    e.getMessage();
+                }
                 //-----使用簡訊傳訊，測試簡訊內容格式
-                Intent intent_sms = new Intent(Intent.ACTION_VIEW);
-                intent_sms.setData( Uri.parse("smsto:"));
-                intent_sms.setType("vnd.android-dir/mms-sms");
-                intent_sms.putExtra("address",new String(phoneNumber));
-                intent_sms.putExtra("sms_body","<#> your otp is 123456\n"+appSignatures.get(0));
 
-                MainActivity.this.startActivity(intent_sms);
 
             }
         });
@@ -162,7 +168,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 Credential credential = data.getParcelableExtra(Credential.EXTRA_KEY);
                 phoneNumber = credential.getId();
                 txvNumber.setText("要接收OTP的裝置號碼為："+phoneNumber +
-                        ",\n 裝置signature為："+ appSignatures.get(0));
+                        ",\n 您的裝置signature為："+ appSignatures.get(0));
             }
         }
     }
